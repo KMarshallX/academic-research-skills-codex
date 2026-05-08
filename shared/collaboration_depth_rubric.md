@@ -16,7 +16,7 @@ license: CC-BY-NC 4.0
 
 Wang & Zhang (2026) empirically show that student-GenAI collaboration on pedagogical partnership terms simultaneously activates two cognitive pathways — **vigilance** (critical evaluation of AI output) and **offloading** (strategic delegation of cognitive work) — and that **both** independently predict transformative learning. Counterintuitively, cognitive offloading is **positively** associated with deep learning (β = 0.333, p < 0.001), with U-shaped dynamics: shallow scattered use (Zone 2) produces worse outcomes than no AI use (Zone 1); substantial committed delegation (Zone 3) unlocks higher-order reflection (β-quadratic = 0.102, p < 0.001).
 
-This rubric operationalizes their framework as a post-hoc observer signal for Claude Code agents. It is used by `academic-pipeline/agents/collaboration_depth_agent.md` to score dialogue logs and produce **advisory, non-blocking** feedback to the user on how their collaboration pattern is shaping learning depth.
+This rubric operationalizes their framework as a post-hoc observer signal for Codex agents. It is used by `academic-pipeline/agents/collaboration_depth_agent.md` to score dialogue logs and produce **advisory, non-blocking** feedback to the user on how their collaboration pattern is shaping learning depth.
 
 The rubric is **descriptive, not prescriptive**. It does not gate user progression. It does not celebrate high scores. It does not suggest low scores are failures. Its purpose is to make collaboration mode visible, so the user can decide whether to change it.
 

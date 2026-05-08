@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Changed (Codex-only bundle migration)
+
+- Migrated active packaging and setup guidance to `academic-research-skills-codex`.
+- Removed legacy plugin metadata, startup hook wiring, and generated project-instruction files that were not part of the Codex runtime.
+- Made `AGENTS.md` the canonical routing/version instruction source for `scripts/check_version_consistency.py`.
+- Converted `commands/ars-*.md` into Codex invocation notes without model-pinned frontmatter.
+- Added `scripts/check_codex_packaging.py` plus unit coverage to validate the four skill roots, required root-level support directories, symlink resolution, and absence of active legacy packaging references.
+
 ### Added (v3.6.7 Step 6 Phase 6.8 — Step 8 evaluation case)
 
 - **17 micro-fixtures + 1 chapter-level integration fixture** under

@@ -61,15 +61,18 @@ jobs:
           PYTHONPATH: .
         run: python3 -m unittest scripts.test_check_collaboration_depth_rubric -v
 
-      - name: Check version consistency (CLAUDE.md / SKILL.md / CHANGELOG)
+      - name: Check version consistency (AGENTS.md / SKILL.md / CHANGELOG)
         env:
           PYTHONPATH: scripts
         run: python3 scripts/check_version_consistency.py
 
+      - name: Check Codex-only packaging shape
+        run: python3 scripts/check_codex_packaging.py
+
       - name: Run version consistency unit tests
         env:
           PYTHONPATH: .
-        run: python3 -m unittest scripts.test_check_version_consistency -v
+        run: python3 -m unittest scripts.test_check_version_consistency scripts.test_check_codex_packaging -v
 
       - name: Run check_sprint_contract unit tests
         env:
@@ -223,4 +226,3 @@ jobs:
         run: |
           pip install pytest pyyaml jsonschema
           pytest scripts/test_run_codex_audit_e2e.py -v
-

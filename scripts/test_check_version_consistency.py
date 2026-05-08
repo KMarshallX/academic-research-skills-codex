@@ -40,13 +40,11 @@ def _write_skill(root: Path, name: str, version: str) -> None:
     )
 
 
-def _write_claude_md(
+def _write_agents_md(
     root: Path,
     suite_version: str,
     table_rows: list[tuple[str, str]],
 ) -> None:
-    claude_dir = root / ".claude"
-    claude_dir.mkdir(parents=True, exist_ok=True)
     rows = "\n".join(
         f"| `{name}` v{ver} | purpose | modes |" for name, ver in table_rows
     )
@@ -62,7 +60,7 @@ def _write_claude_md(
         "## Version Info\n"
         f"- **Suite version**: {suite_version} (per CHANGELOG.md)\n"
     )
-    (claude_dir / "CLAUDE.md").write_text(text, encoding="utf-8")
+    (root / "AGENTS.md").write_text(text, encoding="utf-8")
 
 
 def _write_changelog(root: Path, latest_version: str) -> None:
@@ -91,7 +89,7 @@ def _write_aligned_fixture(root: Path) -> None:
     ]
     for name, ver in skills:
         _write_skill(root, name, ver)
-    _write_claude_md(root, suite_version="3.5.0", table_rows=skills)
+    _write_agents_md(root, suite_version="3.5.0", table_rows=skills)
     _write_changelog(root, latest_version="3.5.0")
 
 
@@ -105,7 +103,7 @@ def _write_aligned_fixture_v351(root: Path) -> None:
     ]
     for name, ver in skills:
         _write_skill(root, name, ver)
-    _write_claude_md(root, suite_version="3.5.1", table_rows=skills)
+    _write_agents_md(root, suite_version="3.5.1", table_rows=skills)
     _write_changelog(root, latest_version="3.5.1")
 
 
@@ -144,7 +142,7 @@ class TestVersionConsistency(unittest.TestCase):
             self.assertIn("2.8.0", result.stdout)
 
     def test_suite_version_vs_changelog_drift_fails(self) -> None:
-        """CLAUDE.md suite version != CHANGELOG latest entry — must fail."""
+        """AGENTS.md suite version != CHANGELOG latest entry — must fail."""
         with TemporaryDirectory() as tmp:
             root = Path(tmp)
             _write_aligned_fixture(root)
@@ -164,7 +162,7 @@ class TestVersionConsistency(unittest.TestCase):
             # This isolates invariant 3 (pipeline tracks suite) from invariant 1
             # (SKILL.md == table).
             _write_skill(root, "academic-pipeline", "3.4.0")
-            _write_claude_md(
+            _write_agents_md(
                 root,
                 suite_version="3.5.0",
                 table_rows=[
@@ -200,11 +198,11 @@ class TestVersionConsistency(unittest.TestCase):
             self.assertEqual(result.returncode, 1)
             self.assertIn("academic-paper-reviewer", result.stdout)
 
-    def test_missing_suite_version_in_claude_md_fails(self) -> None:
+    def test_missing_suite_version_in_agents_md_fails(self) -> None:
         with TemporaryDirectory() as tmp:
             root = Path(tmp)
             _write_aligned_fixture(root)
-            (root / ".claude" / "CLAUDE.md").write_text(
+            (root / "AGENTS.md").write_text(
                 textwrap.dedent(
                     """\
                     # Academic Research Skills

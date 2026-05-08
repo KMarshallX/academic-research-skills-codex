@@ -200,7 +200,7 @@ SLIM checkpoints never reset. MANDATORY checkpoints co-occur with reset when app
 
    ### Resume Instruction
    - Passport file: <path>
-   - To continue, start a fresh Claude Code session and invoke:
+   - To continue, start a fresh Codex session and invoke:
      resume_from_passport=<hash>
    - Continuing in-session defeats the token-savings intent of `ARS_PASSPORT_RESET=1`.
    ```
@@ -278,7 +278,7 @@ For FULL checkpoints, the orchestrator must collect from state_tracker:
 
 ### Resume Instruction
 - Passport file: <absolute or repo-relative path>
-- To continue, start a fresh Claude Code session and invoke:
+- To continue, start a fresh Codex session and invoke:
   resume_from_passport=<hash>
 - Continuing in-session defeats the token-savings intent of `ARS_PASSPORT_RESET=1`.
 ```

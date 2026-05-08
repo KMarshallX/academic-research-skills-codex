@@ -343,7 +343,7 @@ References: Only list Li (2024); do not list Wang's original work
 ```
 OpenAI (2024). ChatGPT (Version GPT-4) [Large language model]. https://chat.openai.com
 
-Anthropic (2024). Claude (Version 3.5 Sonnet) [Large language model]. https://claude.ai
+OpenAI (2026). GPT model used in this Codex session [Large language model]. https://openai.com
 ```
 
 ---

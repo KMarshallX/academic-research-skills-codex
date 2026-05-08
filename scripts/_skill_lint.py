@@ -14,7 +14,7 @@ from pathlib import Path
 import yaml
 
 SKIP_DIRS = frozenset(
-    {"shared", "scripts", "docs", ".git", ".github", "examples", ".local-plans", ".claude"}
+    {"shared", "scripts", "docs", ".git", ".github", "examples", ".local-plans"}
 )
 
 

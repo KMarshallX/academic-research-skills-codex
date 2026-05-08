@@ -74,7 +74,7 @@ AI-assisted output was reviewed, edited, and verified by the authors,
 who take full responsibility for the content of this article.
 ```
 
-**Note**: Replace `[MODEL_VERSION]` with the actual model used in this run (e.g., `Opus 4.7`, `Sonnet 4.6`). Pull the identifier from session metadata rather than hard-coding a version, since Anthropic's lineup changes over time.
+**Note**: Replace `[MODEL_VERSION]` with the actual model used in this run (for example, the active Codex model identifier). Pull the identifier from session metadata rather than hard-coding a version, since model lineups change over time.
 
 ### Phase 5: Placement instructions
 

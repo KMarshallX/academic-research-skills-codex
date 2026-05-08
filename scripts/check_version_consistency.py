@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-"""Lint: version labels stay aligned across .claude/CLAUDE.md, SKILL.md frontmatter, and CHANGELOG.md.
+"""Lint: version labels stay aligned across AGENTS.md, SKILL.md frontmatter, and CHANGELOG.md.
 
 Invariants enforced:
-  1. Every skill listed in .claude/CLAUDE.md Skills Overview table has a version
+  1. Every skill listed in AGENTS.md Skills Overview table has a version
      equal to its own SKILL.md metadata.version.
-  2. .claude/CLAUDE.md "**Suite version**: X.Y.Z" equals the most recent
+  2. AGENTS.md "**Suite version**: X.Y.Z" equals the most recent
      "## [X.Y.Z]" entry in CHANGELOG.md.
   3. academic-pipeline version in the table equals the suite version (pipeline
      = orchestrator, by convention tracks the suite release).
@@ -30,13 +30,13 @@ CHANGELOG_ENTRY_RE = re.compile(r"^##\s*\[(\d+\.\d+\.\d+)\]", re.MULTILINE)
 PIPELINE_SKILL_NAME = "academic-pipeline"
 
 
-def _parse_table_versions(claude_md_text: str) -> dict[str, str]:
+def _parse_table_versions(agents_md_text: str) -> dict[str, str]:
     """Return mapping skill_name -> version from the Skills Overview table."""
-    return dict(TABLE_ROW_RE.findall(claude_md_text))
+    return dict(TABLE_ROW_RE.findall(agents_md_text))
 
 
-def _parse_suite_version(claude_md_text: str) -> str | None:
-    m = SUITE_VERSION_RE.search(claude_md_text)
+def _parse_suite_version(agents_md_text: str) -> str | None:
+    m = SUITE_VERSION_RE.search(agents_md_text)
     return m.group(1) if m else None
 
 
@@ -48,23 +48,23 @@ def _parse_changelog_latest(changelog_text: str) -> str | None:
 def check(root: Path) -> list[str]:
     errors: list[str] = []
 
-    claude_md = root / ".claude" / "CLAUDE.md"
-    if not claude_md.is_file():
-        errors.append(f"{claude_md}: not found")
+    agents_md = root / "AGENTS.md"
+    if not agents_md.is_file():
+        errors.append(f"{agents_md}: not found")
         return errors
-    claude_text = claude_md.read_text(encoding="utf-8")
+    agents_text = agents_md.read_text(encoding="utf-8")
 
-    table_versions = _parse_table_versions(claude_text)
+    table_versions = _parse_table_versions(agents_text)
     if not table_versions:
         errors.append(
-            f"{claude_md}: Skills Overview table has no parseable "
+            f"{agents_md}: Skills Overview table has no parseable "
             "`<skill>` vX.Y.Z rows"
         )
 
-    suite_version = _parse_suite_version(claude_text)
+    suite_version = _parse_suite_version(agents_text)
     if suite_version is None:
         errors.append(
-            f"{claude_md}: missing '**Suite version**: X.Y.Z' line"
+            f"{agents_md}: missing '**Suite version**: X.Y.Z' line"
         )
 
     changelog = root / "CHANGELOG.md"
@@ -76,7 +76,7 @@ def check(root: Path) -> list[str]:
             errors.append(f"{changelog}: no '## [X.Y.Z]' entry found")
         elif suite_version is not None and latest != suite_version:
             errors.append(
-                f"{claude_md}: Suite version {suite_version!r} does not match "
+                f"{agents_md}: Suite version {suite_version!r} does not match "
                 f"CHANGELOG latest entry {latest!r}"
             )
 
@@ -84,7 +84,7 @@ def check(root: Path) -> list[str]:
         skill_md = root / skill_name / "SKILL.md"
         if not skill_md.is_file():
             errors.append(
-                f"{claude_md}: table lists {skill_name!r} v{table_version} "
+                f"{agents_md}: table lists {skill_name!r} v{table_version} "
                 f"but {skill_md} does not exist"
             )
             continue
@@ -104,7 +104,7 @@ def check(root: Path) -> list[str]:
         declared_str = str(declared)
         if declared_str != table_version:
             errors.append(
-                f"{claude_md}: {skill_name!r} listed as v{table_version} but "
+                f"{agents_md}: {skill_name!r} listed as v{table_version} but "
                 f"{skill_md} metadata.version is {declared_str!r}"
             )
 
@@ -112,7 +112,7 @@ def check(root: Path) -> list[str]:
         pipeline_in_table = table_versions.get(PIPELINE_SKILL_NAME)
         if pipeline_in_table is not None and pipeline_in_table != suite_version:
             errors.append(
-                f"{claude_md}: {PIPELINE_SKILL_NAME} listed as "
+                f"{agents_md}: {PIPELINE_SKILL_NAME} listed as "
                 f"v{pipeline_in_table} but suite version is {suite_version!r} "
                 "(pipeline tracks the suite release)"
             )

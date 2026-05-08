@@ -4,7 +4,7 @@
 
 This protocol enables optional cross-model verification for high-stakes AI judgments. When enabled, a second AI model independently reviews outputs from the primary model, reducing shared-bias blind spots.
 
-**This is entirely optional.** All ARS skills work with Claude Opus 4.7 alone. Cross-model verification is an additional layer for users who want higher confidence in integrity checks, devil's advocate challenges, and review judgments.
+**This is entirely optional.** All ARS skills work with the active Codex model alone. Cross-model verification is an additional layer for users who want higher confidence in integrity checks, devil's advocate challenges, and review judgments.
 
 ## Why Cross-Model Verification
 
@@ -18,12 +18,12 @@ A stress test of 68 AI-generated citations found 31% had problems — and all pa
 
 | Model | API ID | Provider | Best For |
 |-------|--------|----------|----------|
-| Claude Opus 4.7 | `claude-opus-4-7` | Anthropic | Primary model (default for all ARS skills) |
+| Active Codex model | runtime-provided | OpenAI / configured provider | Primary model for ARS skills |
 | GPT-5.4 Pro | `gpt-5.4-pro` | OpenAI | Cross-verification — strongest reasoning |
 | GPT-5.4 | `gpt-5.4` | OpenAI | Cross-verification — balanced cost/performance |
 | Gemini 3.1 Pro | `gemini-3.1-pro-preview` | Google | Cross-verification — strong at factual verification |
 
-**Recommended cross-verification pair:** Claude Opus 4.7 (primary) + GPT-5.4 Pro or Gemini 3.1 Pro (verifier).
+**Recommended cross-verification pair:** active Codex model (primary) + an independently configured verifier model.
 
 Using two non-Anthropic models as primary+verifier is possible but not tested with ARS prompts.
 
@@ -31,7 +31,7 @@ Using two non-Anthropic models as primary+verifier is possible but not tested wi
 
 ### Prerequisites
 
-You need API keys from at least one additional provider. ARS itself runs inside Claude Code, so Claude is always available as the primary model.
+You need API keys from at least one additional provider. ARS itself runs inside Codex, so the active Codex model is the primary model.
 
 ### Step 1: Get API Keys
 
@@ -63,7 +63,7 @@ Then reload: `source ~/.zshrc`
 
 ### Step 3: Verify Setup
 
-In Claude Code, you can test by asking:
+In Codex, you can test by asking:
 ```
 Check if cross-model verification is available for ARS
 ```
@@ -167,7 +167,7 @@ The DA agent, after completing its checkpoint report, should:
 
 ### OpenAI (GPT-5.4 / GPT-5.4 Pro)
 
-In Claude Code, the agent can use the Bash tool to make API calls:
+In Codex, the agent can use the shell tool to make API calls:
 
 ```bash
 curl -s https://api.openai.com/v1/chat/completions \

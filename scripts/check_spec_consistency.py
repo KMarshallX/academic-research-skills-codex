@@ -71,14 +71,18 @@ def check_mode_registry() -> None:
             fail(f"{rel_path}: missing mode heading {heading!r}")
 
 
-def check_claude_md() -> None:
-    rel_path = ".claude/CLAUDE.md"
+def check_agents_md() -> None:
+    rel_path = "AGENTS.md"
     expect_contains(rel_path, "integrity check (Stage 2.5)")
     expect_contains(rel_path, "final integrity check (Stage 4.5)")
     expect_contains(rel_path, "**Suite version**: 3.7.0")
+    expect_contains(rel_path, "Codex-only")
     for forbidden in (
         "6th independent reviewer",
         "Peer review gains 6th independent reviewer",
+        "Claude Code plugin packaging",
+        ".claude-plugin",
+        "ANTHROPIC_API_KEY",
     ):
         expect_absent(rel_path, forbidden)
 
@@ -138,29 +142,14 @@ def check_readme_sections() -> None:
 
     expect_contains(rel_path, "version-v3.7.0-blue")
     expect_contains(rel_path, "releases/tag/v3.7.0")
-    expect_contains(rel_path, "### v3.7.0 (2026-05-05)")
-    expect_contains(rel_path, "### v3.6.8 (2026-05-03)")
-    expect_contains(rel_path, "### v3.6.7 (2026-04-30)")
-    expect_contains(rel_path, "### v3.6.5 (2026-04-27)")
-    expect_contains(rel_path, "### v3.6.4 (2026-04-25)")
-    expect_contains(rel_path, "### v3.6.3 (2026-04-23)")
-    expect_contains(rel_path, "### v3.6.2 (2026-04-23)")
-    expect_contains(rel_path, "### v3.5.1 (2026-04-22)")
-    expect_contains(rel_path, "### v3.5.0 (2026-04-21)")
-    expect_contains(rel_path, "### v3.4.0 (2026-04-20)")
-    expect_contains(rel_path, "### v3.3.6 (2026-04-15)")
-    expect_contains(rel_path, "### v3.3.5 (2026-04-15)")
-    expect_contains(rel_path, "### v3.3.4 (2026-04-15)")
-    expect_contains(rel_path, "### v3.3.3 (2026-04-15)")
-    expect_contains(rel_path, "### v3.3.2 (2026-04-15)")
+    expect_contains(rel_path, "# Academic Research Skills for Codex")
+    expect_contains(rel_path, "Codex-only")
+    expect_contains(rel_path, "academic-research-skills-codex")
     for heading in (
         "#### Deep Research (7 modes)",
         "#### Academic Paper (10 modes)",
         "#### Academic Paper Reviewer (6 modes)",
-        "### Deep Research (v2.8)",
-        "### Academic Paper (v3.0)",
-        "### Academic Paper Reviewer (v1.8)",
-        "### Academic Pipeline (v3.7)",
+        "#### Academic Pipeline (Orchestrator)",
     ):
         if heading not in text:
             fail(f"{rel_path}: missing heading {heading!r}")
@@ -196,6 +185,14 @@ def check_readme_sections() -> None:
         expect_absent(rel_path, forbidden)
     # DOCX contract lines moved to docs/SETUP.md in v3.3.6; checked there instead.
     expect_contains(rel_path, "DOCX (via Pandoc when available)")
+    for forbidden in (
+        "Claude Code",
+        "claude.ai",
+        "ANTHROPIC_API_KEY",
+        ".claude/skills",
+        ".claude-plugin",
+    ):
+        expect_absent(rel_path, forbidden)
     check_relative_markdown_links(rel_path)
 
 
@@ -205,29 +202,14 @@ def check_readme_zh_sections() -> None:
 
     expect_contains(rel_path, "version-v3.7.0-blue")
     expect_contains(rel_path, "releases/tag/v3.7.0")
-    expect_contains(rel_path, "### v3.7.0（2026-05-05）")
-    expect_contains(rel_path, "### v3.6.8（2026-05-03）")
-    expect_contains(rel_path, "### v3.6.7（2026-04-30）")
-    expect_contains(rel_path, "### v3.6.5（2026-04-27）")
-    expect_contains(rel_path, "### v3.6.4（2026-04-25）")
-    expect_contains(rel_path, "### v3.6.3（2026-04-23）")
-    expect_contains(rel_path, "### v3.6.2（2026-04-23）")
-    expect_contains(rel_path, "### v3.5.1（2026-04-22）")
-    expect_contains(rel_path, "### v3.5.0（2026-04-21）")
-    expect_contains(rel_path, "### v3.4.0（2026-04-20）")
-    expect_contains(rel_path, "### v3.3.6 (2026-04-15)")
-    expect_contains(rel_path, "### v3.3.5 (2026-04-15)")
-    expect_contains(rel_path, "### v3.3.4 (2026-04-15)")
-    expect_contains(rel_path, "### v3.3.3 (2026-04-15)")
-    expect_contains(rel_path, "### v3.3.2 (2026-04-15)")
+    expect_contains(rel_path, "# Academic Research Skills for Codex")
+    expect_contains(rel_path, "Codex-only")
+    expect_contains(rel_path, "academic-research-skills-codex")
     for heading in (
         "#### Deep Research（深度研究，7 種模式）",
         "#### Academic Paper（學術論文撰寫，10 種模式）",
         "#### Academic Paper Reviewer（論文審查，6 種模式）",
-        "### Deep Research (v2.8)",
-        "### Academic Paper (v3.0)",
-        "### Academic Paper Reviewer (v1.8)",
-        "### Academic Pipeline (v3.7)",
+        "#### Academic Pipeline（全流程調度器）",
     ):
         if heading not in text:
             fail(f"{rel_path}: missing heading {heading!r}")
@@ -269,10 +251,22 @@ def check_readme_zh_sections() -> None:
         expect_absent(rel_path, forbidden)
     # DOCX contract lines moved to docs/SETUP.zh-TW.md in v3.3.6; checked there instead.
     expect_contains(rel_path, "DOCX（Pandoc 可用時）")
+    for forbidden in (
+        "Claude Code",
+        "claude.ai",
+        "ANTHROPIC_API_KEY",
+        ".claude/skills",
+        ".claude-plugin",
+    ):
+        expect_absent(rel_path, forbidden)
     check_relative_markdown_links(rel_path)
 
 
 def check_setup_docs() -> None:
+    expect_contains("docs/SETUP.md", "Codex-only")
+    expect_contains("docs/SETUP.md", "OPENAI_API_KEY")
+    expect_contains("docs/SETUP.zh-TW.md", "Codex-only")
+    expect_contains("docs/SETUP.zh-TW.md", "OPENAI_API_KEY")
     expect_contains("docs/SETUP.md", "Direct `.docx` generation uses [Pandoc]")
     expect_contains(
         "docs/SETUP.md",
@@ -343,7 +337,7 @@ def check_reference_docs() -> None:
 
 def main() -> int:
     check_mode_registry()
-    check_claude_md()
+    check_agents_md()
     check_reviewer_version_block()
     check_pipeline_docs()
     check_readme_sections()

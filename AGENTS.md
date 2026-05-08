@@ -1,6 +1,6 @@
 # Academic Research Skills
 
-A suite of Claude Code skills for rigorous academic research, paper writing, peer review, and pipeline orchestration.
+A suite of Codex skills for rigorous academic research, paper writing, peer review, and pipeline orchestration.
 
 ## Skills Overview
 
@@ -13,11 +13,11 @@ A suite of Claude Code skills for rigorous academic research, paper writing, pee
 
 ## v3.7.0 Key Additions
 
-- **Claude Code plugin packaging**: ARS now installs in one line via `/plugin marketplace add Imbad0202/academic-research-skills` + `/plugin install academic-research-skills`. The traditional `git clone + symlink to ~/.claude/skills/` flow continues to work — both tracks are first-class. Repo gains four top-level directories: `.claude-plugin/`, `commands/`, `agents/`, `hooks/`, plus a `skills/` symlink dir; existing 4 skill directories untouched.
-- **10 slash commands** (`commands/ars-*.md`) mapping `MODE_REGISTRY.md` entries to `/ars-<mode>` triggers with model routing pinned in frontmatter — `opus` for `full` and `revision-coach`, `sonnet` for the other 8, no Haiku.
-- **3 plugin-shipped agents** (`agents/*_agent.md`) as relative symlinks to the v3.6.7-hardened downstream agents in `deep-research/agents/`. Source frontmatter gains `model: inherit` so an Opus session keeps Opus agents while the user's PreToolUse `warn-agent-no-model.sh` hook gates Haiku at dispatch.
-- **SessionStart announce hook** (`hooks/hooks.json` + `scripts/announce-ars-loaded.sh`) lists the 10 slash commands + 3 agents + token-budget pointer when the plugin loads. Bash 3.2 compatible.
-- **Phase 2.2 scope reduction note**: a `SubagentStop → run_codex_audit.sh` codex audit hook was scoped out for v3.7.0 (contract gap: hook payload carries no stage/deliverable; invoker boundary: same-session in-LLM Bash forbidden by the wrapper). Deferred to a future release.
+- **Codex-only skills bundle**: ARS is packaged for local Codex as four installable skill roots (`deep-research`, `academic-paper`, `academic-paper-reviewer`, `academic-pipeline`) plus required repo-root support directories (`shared/`, `scripts/`, `docs/`, `MODE_REGISTRY.md`).
+- **Codex invocation notes**: `commands/ars-*.md` maps common ARS workflows to skill/mode entries without model-pinned frontmatter. Model and reasoning effort are controlled by the active Codex runtime.
+- **Prompt assets**: `agents/*_agent.md` remains a relative symlink layer to selected v3.6.7-hardened downstream prompts in `deep-research/agents/`; these are Codex-readable prompt assets, not a separate routing layer.
+- **Packaging validation**: `scripts/check_codex_packaging.py` enforces the Codex-only bundle shape, required support directories, symlink resolution, and absence of active legacy packaging references.
+- **Audit wrapper boundary**: `scripts/run_codex_audit.sh` remains available for separate Codex CLI audit dispatch. Same-session in-LLM invocation is still forbidden by the wrapper contract.
 
 ## v3.6.8 Key Additions
 
@@ -62,7 +62,7 @@ A suite of Claude Code skills for rigorous academic research, paper writing, pee
 
 ## v3.6.3 Key Additions
 
-- **Opt-in passport reset boundary**: new `ARS_PASSPORT_RESET=1` flag promotes every FULL checkpoint to a context-reset boundary. New `resume_from_passport=<hash>` mode in `academic-pipeline` lets users resume a pipeline run in a fresh Claude Code session from the Material Passport ledger alone, without replaying prior turns. For `systematic-review` mode with the flag ON, reset is mandatory at every FULL checkpoint; other modes treat reset as the flag-gated default. Flag OFF preserves pre-v3.6.3 continuation behavior byte-for-byte.
+- **Opt-in passport reset boundary**: new `ARS_PASSPORT_RESET=1` flag promotes every FULL checkpoint to a context-reset boundary. New `resume_from_passport=<hash>` mode in `academic-pipeline` lets users resume a pipeline run in a fresh Codex session from the Material Passport ledger alone, without replaying prior turns. For `systematic-review` mode with the flag ON, reset is mandatory at every FULL checkpoint; other modes treat reset as the flag-gated default. Flag OFF preserves pre-v3.6.3 continuation behavior byte-for-byte.
 - **Schema 9 `reset_boundary[]` append-only ledger** with two entry kinds: `kind: boundary` (recorded at FULL checkpoints) and `kind: resume` (recorded when a boundary is consumed). Hash uses JSON Canonical Form + SHA-256 with canonical `"000000000000"` placeholder for self-reference safety. Optional `pending_decision` field handles MANDATORY branch choices (Stage 3 reject/restructure/abort, Stage 5 finalization) that would otherwise be lost on reset.
 - **Protocol doc** `academic-pipeline/references/passport_as_reset_boundary.md` (authoritative) + **CI lint** `scripts/check_passport_reset_contract.py` enforcing every mention of the flag co-locates a protocol-doc reference.
 - **Docs** `docs/PERFORMANCE.md` + `docs/PERFORMANCE.zh-TW.md` updated with long-running-session guidance for the reset workflow.
